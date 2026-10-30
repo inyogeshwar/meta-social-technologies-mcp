@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "meta_social_technologies": {
+      "command": "node",
+      "args": [
+        "D:\\meta-social-technologies-mcp\\server.js"
+      ],
+      "env": {
+        "FB_PAGE_ACCESS_TOKEN": "YOUR_PERMANENT_PAGE_ACCESS_TOKEN",
+        "FB_PAGE_ID": "YOUR_FACEBOOK_PAGE_ID",
+        "INSTAGRAM_ID": "YOUR_INSTAGRAM_ACCOUNT_ID",
+        "THREADS_ACCESS_TOKEN": "YOUR_THREADS_ACCESS_TOKEN",
+        "THREADS_USER_ID": "YOUR_THREADS_ACCOUNT_ID"
+      }
+    }
+  }
+}

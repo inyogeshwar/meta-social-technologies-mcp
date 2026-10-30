@@ -1,0 +1,42 @@
+{
+  "name": "meta-social-technologies-mcp",
+  "version": "1.0.0",
+  "description": "Enterprise Meta Social Technologies MCP Server & Automation Suite for Facebook Pages & Instagram Direct Messaging",
+  "main": "server.js",
+  "bin": {
+    "meta-social-mcp": "server.js"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/test-connection.js",
+    "test:messaging": "node tests/test-messaging.js",
+    "test:reactions": "node tests/test-reactions.js",
+    "exchange:threads": "node scripts/exchange-threads-token.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "meta",
+    "facebook",
+    "instagram",
+    "direct-messaging",
+    "automation",
+    "antigravity",
+    "ai-agent",
+    "growth-funnel",
+    "manychat-alternative"
+  ],
+  "author": "Yogeshwar Kumar <yogeshwar853202@gmail.com> (https://github.com/inyogeshwar)",
+  "homepage": "https://github.com/inyogeshwar/meta-social-technologies-mcp#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inyogeshwar/meta-social-technologies-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/inyogeshwar/meta-social-technologies-mcp/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
