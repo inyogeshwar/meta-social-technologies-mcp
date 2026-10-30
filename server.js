@@ -1,5 +1,5 @@
 /**
- * Meta Social Technologies Local MCP Server v3.0
+ * Meta Social Technologies Local MCP Server v4.0 (Enhanced with Official Meta Documentation Suite)
  * Enterprise Instagram Business Messaging & Facebook Automation Suite
  * Features:
  *  - Core Publishing: Posts, Photos, Reels
@@ -155,7 +155,178 @@ async function graphRequest(endpoint, method = 'GET', data = null, isJson = fals
 }
 
 // Tool Definitions
+
+// Official Meta Graph API Error Codes Database
+const META_ERROR_CODES = [
+  { code: -2, subcode: 2207003, title: 'Download Timeout', message: 'It takes too long to download the media.', solution: 'A timeout occurred while downloading the media. Ensure your server responds quickly and retry.' },
+  { code: -2, subcode: 2207020, title: 'Media Expired', message: 'The media you are trying to access has expired.', solution: 'Generate a new container ID and retry upload within 24 hours.' },
+  { code: -1, subcode: 2207001, title: 'Instagram Server Error', message: 'Instagram internal server error.', solution: 'Temporary Meta server error. Wait 30 seconds and retry.' },
+  { code: -1, subcode: 2207032, title: 'Create Media Failed', message: 'Create media fail, please try to re-create media.', solution: 'Failed to create a media container. Re-check file URL and retry.' },
+  { code: -1, subcode: 2207053, title: 'Upload Error', message: 'Unknown upload error during video processing.', solution: 'Generate a new media container and use resumable upload session for large videos.' },
+  { code: 1, subcode: 2207057, title: 'Invalid Thumbnail Offset', message: 'Thumbnail offset must be >= 0 and < video duration.', solution: 'Provide thumbnail offset in milliseconds within the video duration.' },
+  { code: 4, subcode: 2207051, title: 'Spam Rate Limit / Restriction', message: 'Action restricted to protect community.', solution: 'Meta suspected repetitive actions as spam. Increase delay between requests and avoid duplicate links.' },
+  { code: 9, subcode: 2207042, title: 'Publishing Quota Exceeded', message: 'Daily Content Publishing API limit reached (50 posts/24h).', solution: 'The account reached the 50 published posts limit in 24 hours. Wait for the rolling 24h window to reset.' },
+  { code: 24, subcode: 2207006, title: 'Media Not Found / Permission Denied', message: 'The media cannot be found or token lacks permissions.', solution: 'Verify token has instagram_basic and instagram_content_publish permissions.' },
+  { code: 24, subcode: 2207008, title: 'Container Builder Expired', message: 'Media builder creation ID does not exist or expired.', solution: 'Wait 30-60 seconds for processing or recreate container.' },
+  { code: 25, subcode: 2207050, title: 'Account Restricted', message: 'Instagram Professional account is restricted or checkpointed.', solution: 'Log in to Instagram app on smartphone and complete verification/security prompts.' },
+  { code: 100, subcode: 2207023, title: 'Unknown Media Type', message: 'Media type not recognized.', solution: 'Use supported media_type: IMAGE, VIDEO, REELS, STORIES, or CAROUSEL.' },
+  { code: 100, subcode: 2207028, title: 'Invalid Carousel Count', message: 'Carousels need between 2 and 20 photos/videos.', solution: 'Provide at least 2 items and no more than 20 items in children parameter.' },
+  { code: 100, subcode: 2207040, title: 'Too Many User Tags', message: 'Cannot use more than 20 @ tags per post.', solution: 'Reduce user tags to 20 or fewer.' },
+  { code: 100, subcode: 2018007, title: 'Invalid Direct Audio Format', message: 'Audio format rejected in Direct Message.', solution: 'Instagram Direct strictly requires .m4a, .aac, or .wav containers (MP3/OGG unsupported).' },
+  { code: 190, subcode: null, title: 'Invalid / Expired Access Token', message: 'The access token is expired or revoked.', solution: 'Re-authenticate with Facebook/Instagram Login or exchange for a fresh 60-day token.' },
+  { code: 352, subcode: 2207026, title: 'Unsupported Video Codec', message: 'Video format is not supported.', solution: 'Ensure video is MP4/MOV container with H.264 video codec and AAC audio codec.' },
+  { code: 9004, subcode: 2207052, title: 'Media URL Unreachable', message: 'Media could not be fetched from URI.', solution: 'Ensure media URL is public (HTTP 200), does not require auth, and has valid SSL certificate.' },
+  { code: 9007, subcode: 2207027, title: 'Media Processing Incomplete', message: 'Media is not ready for publishing.', solution: 'Poll GET /<container_id>?fields=status_code until status is FINISHED before publishing.' },
+  { code: 36000, subcode: 2207004, title: 'Image Too Large', message: 'Image size exceeds maximum limit.', solution: 'Compress image to less than 8 MiB.' },
+  { code: 36003, subcode: 2207009, title: 'Invalid Aspect Ratio', message: 'Submitted image aspect ratio is not supported.', solution: 'Crop image within aspect ratio range 4:5 (0.8) to 1.91:1.' },
+  { code: 36004, subcode: 2207010, title: 'Caption Too Long', message: 'Caption exceeds maximum character limit.', solution: 'Shorten caption to max 2,200 characters and max 30 hashtags.' }
+];
+
+function resolveMetaError(code, subcode) {
+  const match = META_ERROR_CODES.find(e => 
+    String(e.code) === String(code) && 
+    (subcode === undefined || subcode === null || String(e.subcode) === String(subcode))
+  );
+  if (match) return match;
+  return {
+    code,
+    subcode,
+    title: 'Meta Graph API Error',
+    message: `Error code ${code} ${subcode ? '(' + subcode + ')' : ''}`,
+    solution: 'Refer to official Meta error documentation in docs/meta-api-reference/instagram-platform/instagram-graph-api/reference/error-codes.md'
+  };
+}
+
 const TOOLS = [
+
+    // --- 11. Official Meta Discovery & Intelligence (Docs-Powered) ---
+    {
+      name: 'discover_business_profile',
+      description: 'Discover details about any public Instagram Business or Creator account (followers, media count, bio, website, and recent public posts) using Meta Business Discovery API.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          username: { type: 'string', description: 'Target Instagram @username to discover (e.g. "natgeo" or "nike").' },
+          include_media: { type: 'boolean', description: 'Whether to also fetch their recent 5 public posts (default: true).' }
+        },
+        required: ['username']
+      }
+    },
+    {
+      name: 'search_instagram_hashtag',
+      description: 'Search Instagram hashtags to retrieve their official static hashtag ID.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          query: { type: 'string', description: 'Hashtag string without # (e.g. "reels", "travel", "ai").' }
+        },
+        required: ['query']
+      }
+    },
+    {
+      name: 'get_hashtag_top_media',
+      description: 'Fetch the most popular top photo and video media for a specific hashtag ID.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          hashtag_id: { type: 'string', description: 'Hashtag ID obtained from search_instagram_hashtag.' },
+          limit: { type: 'number', description: 'Number of media objects (default: 10, max: 50).' }
+        },
+        required: ['hashtag_id']
+      }
+    },
+    {
+      name: 'get_hashtag_recent_media',
+      description: 'Fetch recently published media tagged with a specific hashtag ID.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          hashtag_id: { type: 'string', description: 'Hashtag ID obtained from search_instagram_hashtag.' },
+          limit: { type: 'number', description: 'Number of media objects (default: 10, max: 50).' }
+        },
+        required: ['hashtag_id']
+      }
+    },
+    {
+      name: 'get_content_publishing_limit',
+      description: 'Query your account real-time Content Publishing API quota usage (50 posts per 24 hours rolling limit).',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          since: { type: 'number', description: 'Optional Unix timestamp within the last 24h. Omit for full 24h usage.' }
+        }
+      }
+    },
+    {
+      name: 'moderate_comment',
+      description: 'Moderate an Instagram comment: hide, unhide, or permanently delete.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          comment_id: { type: 'string', description: 'Instagram Comment ID to moderate.' },
+          action: { type: 'string', enum: ['hide', 'unhide', 'delete'], description: 'Action to perform.' }
+        },
+        required: ['comment_id', 'action']
+      }
+    },
+    {
+      name: 'get_instagram_stories',
+      description: 'Fetch active 24-hour stories published on your Instagram account.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          limit: { type: 'number', description: 'Number of stories to fetch (default: 10).' }
+        }
+      }
+    },
+    {
+      name: 'get_media_children',
+      description: 'Retrieve individual child media items (photos/videos) from a carousel post.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          media_id: { type: 'string', description: 'Carousel media ID.' }
+        },
+        required: ['media_id']
+      }
+    },
+    {
+      name: 'publish_instagram_carousel',
+      description: 'Create and publish an Instagram carousel album containing 2 to 20 images or videos.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          items: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                url: { type: 'string', description: 'Public image or video URL.' },
+                is_video: { type: 'boolean', description: 'Set true if this child item is a video.' }
+              },
+              required: ['url']
+            },
+            description: 'List of 2 to 20 media items.'
+          },
+          caption: { type: 'string', description: 'Post caption with hashtags.' },
+          is_ai_generated: { type: 'boolean', description: 'Self-disclose that media is AI generated.' }
+        },
+        required: ['items']
+      }
+    },
+    {
+      name: 'get_error_code_info',
+      description: 'Lookup official Meta Graph API error code & subcode to get recommended solutions and causes.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          code: { type: 'number', description: 'Meta error code (e.g. 100, 190, 4, 9, 2207042).' },
+          subcode: { type: 'number', description: 'Optional Meta error subcode (e.g. 2018007, 2207004).' }
+        },
+        required: ['code']
+      }
+    },
+
   // --- 1. Profile & Account ---
   {
     name: 'get_page_profile',
@@ -1295,7 +1466,7 @@ rl.on('line', async (line) => {
 
   if (id === undefined || id === null) {
     if (method === 'notifications/initialized') {
-      console.error('Meta Social Technologies MCP Server v3.0 initialized.');
+      console.error('Meta Social Technologies MCP Server v4.0 initialized (45 Enterprise Tools active).');
     }
     return;
   }
@@ -1311,7 +1482,7 @@ rl.on('line', async (line) => {
             capabilities: { tools: {} },
             serverInfo: {
               name: 'meta_social_technologies',
-              version: '3.0.0'
+              version: '4.0.0'
             }
           }
         });
@@ -1370,4 +1541,4 @@ rl.on('line', async (line) => {
   }
 });
 
-console.error('Meta Social Technologies MCP Server v3.0 listening on stdio.');
+console.error('Meta Social Technologies MCP Server v4.0 listening on stdio (45 Enterprise Tools active).');

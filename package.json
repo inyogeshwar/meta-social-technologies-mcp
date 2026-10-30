@@ -1,7 +1,7 @@
 {
   "name": "meta-social-technologies-mcp",
-  "version": "1.0.0",
-  "description": "Enterprise Meta Social Technologies MCP Server & Automation Suite for Facebook Pages & Instagram Direct Messaging",
+  "version": "4.0.0",
+  "description": "Enterprise Meta Social Technologies MCP Server & Automation Suite for Facebook Pages, Instagram Direct Messaging, Business Discovery, and Threads",
   "main": "server.js",
   "bin": {
     "meta-social-mcp": "server.js"
@@ -25,9 +25,11 @@
     "antigravity",
     "ai-agent",
     "growth-funnel",
+    "business-discovery",
+    "hashtag-intelligence",
     "manychat-alternative"
   ],
-  "author": "Yogeshwar Kumar <yogeshwar853202@gmail.com> (https://github.com/inyogeshwar)",
+  "author": "Yogeshwar Kumar <111217412+inyogeshwar@users.noreply.github.com> (https://github.com/inyogeshwar)",
   "homepage": "https://github.com/inyogeshwar/meta-social-technologies-mcp#readme",
   "repository": {
     "type": "git",

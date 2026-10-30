@@ -1,4 +1,4 @@
-# Meta Social Technologies MCP Server & Automation Suite
+# Meta Social Technologies MCP Server & Automation Suite v4.0
 
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-brightgreen.svg)](https://nodejs.org/)
 [![MCP](https://img.shields.io/badge/Model_Context_Protocol-1.0-blue.svg)](https://modelcontextprotocol.io/)
@@ -6,8 +6,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Author](https://img.shields.io/badge/Created_by-Yogeshwar_Kumar-orange.svg)](https://github.com/inyogeshwar)
 
-> An enterprise-grade **Model Context Protocol (MCP)** server and AI automation engine for **Facebook Pages**, **Instagram Business/Creator accounts**, and **Threads**.
-> Build ManyChat & Superprofile-style comment funnels, send audio voice notes, trigger double-tap heart reactions, execute threaded quoted replies, and publish content seamlessly using AI agents.
+> An enterprise-grade **Model Context Protocol (MCP)** server and AI automation suite for **Facebook Pages**, **Instagram Business/Creator accounts**, and **Threads**.
+> Build ManyChat & Superprofile-style comment funnels, send audio voice notes (`.m4a`), trigger double-tap reactions (`❤️`), execute threaded quoted replies, publish carousels, discover competitor accounts, track hashtags, and troubleshoot errors using official Meta specifications.
 
 ---
 
@@ -15,153 +15,97 @@
 
 - **Developer**: Yogeshwar Kumar
 - **GitHub**: [@inyogeshwar](https://github.com/inyogeshwar)
-- **YouTube Guide**: [Integrate FB Page + Instagram (Lifetime Permanent Access Token)](https://www.youtube.com/watch?v=CzsbItgqRlg)
 - **Target Platforms**: Facebook Pages, Instagram Professional Accounts, and Threads Profiles
+- **Official Docs Mirror**: Complete offline archive of 70 official Meta Markdown guides located in [`docs/meta-api-reference/`](./docs/meta-api-reference/)
 
 ---
 
-## ⚡ Core Features
+## ⚡ Core Capabilities (45 Enterprise Tools)
 
-- 📢 **Publishing**: Facebook status updates, photo posts, Instagram photos, and Instagram Reels (MP4).
-- 💬 **Direct Messaging**: Deliver text, images, PDF files, and audio voice notes (`.m4a`, `.wav`, `.aac`).
-- 🎙️ **Voice Notes & Audio**: Strict adherence to Meta container specifications with zero-reupload via `upload_reusable_attachment`.
-- ❤️ **Message Reactions**: Trigger double-tap heart (`❤️`), fire (`🔥`), thumbs-up (`👍`), or remove reactions on any message ID.
-- 🎯 **Threaded Quoted Replies**: Quote specific messages in Instagram DMs using `reply_to` message ID.
-- 🎁 **Follow-to-Unlock Growth Funnel**: Automated ManyChat-style funnel that checks follower status before unlocking exclusive download links.
-- ⚡ **Interactive Templates**: Quick reply pills, button action cards, and horizontal scrollable generic carousels.
-- 🛠️ **Chat Moderation**: Ice Breakers FAQ configuration, Persistent composer menu, and `ig.me` tracking link generator.
-- 📊 **Analytics**: Real-time account and media-level reach, saves, and interaction insights.
-
----
-
-## 🏗️ Architecture
-
-```text
-┌────────────────────────────────────────────────────────┐
-│              AI Agent (Google Antigravity / Claude)    │
-└───────────────────────────┬────────────────────────────┘
-                            │ (JSON-RPC over Stdio)
-┌───────────────────────────▼────────────────────────────┐
-│         meta-social-technologies-mcp Server            │
-│                     (server.js)                        │
-└───────────────────────────┬────────────────────────────┘
-                            │ (HTTPS REST v26.0 & Threads v1.0)
-┌───────────────────────────▼────────────────────────────┐
-│                    Meta Graph API                      │
-│      ┌────────────────────┼────────────────────┐       │
-│      ▼                    ▼                    ▼       │
-│  Facebook Page        Instagram             Threads    │
-└────────────────────────────────────────────────────────┘
-```
-
----
-
-## 🧰 Complete Tool Catalog (32 Tools across Facebook, Instagram & Threads)
-
-| Category | Tool Name | Description |
-| :--- | :--- | :--- |
-| **Profile** | `get_page_profile` | Profile details and fan count for Facebook Page. |
-| | `get_instagram_profile` | Bio, follower count, and media stats for your account. |
-| | `get_user_profile` | Look up username, profile photo, and follower status of any chatter. |
-| **Publishing** | `publish_facebook_post` | Publish text status and links to Facebook Page. |
-| | `publish_facebook_photo` | Post photo with caption to Facebook Page. |
-| | `publish_instagram_photo` | Post image with caption and hashtags to Instagram. |
-| | `publish_instagram_reel` | Post video reels with caption to Instagram feed. |
-| | `get_facebook_posts` | Fetch recent Facebook posts. |
-| | `get_instagram_media` | Fetch recent Instagram media posts and reels. |
-| **Comments** | `get_media_comments` | Read comments on a specific post or reel. |
-| | `reply_to_comment` | Post a public reply to any comment. |
-| | `like_comment` | Like a comment on behalf of your account. |
-| **Direct DMs** | `send_instagram_dm` | Send text, PDF, image, or M4A/WAV audio. Supports `reply_to_message_id`. |
-| | `send_instagram_private_reply`| Send a private DM in response to a user's comment. |
-| | `react_to_message` | Double-tap heart (`❤️`) or emoji reaction to a specific message ID. |
-| **Funnel** | `check_user_follows_account` | Check if a chatter follows your account. |
-| | `run_instagram_comment_growth_funnel` | Complete ManyChat-style keyword auto-reply & follow-gated DM delivery. |
-| **Interactive** | `send_sender_action` | Trigger `typing_on`, `typing_off`, or `mark_seen`. |
-| | `send_quick_replies` | Interactive pill buttons (up to 13 buttons). |
-| | `send_button_template` | Structured text with up to 3 action buttons. |
-| | `send_generic_template` | Scrollable carousel cards with images and links. |
-| | `send_human_agent_message` | Send messages outside the 24-hr window up to 7 days (`HUMAN_AGENT`). |
-| | `upload_reusable_attachment`| Pre-upload media to get reusable `attachment_id`. |
-| **Chat UX** | `get_conversations` | List active DM conversations and unread counts. |
-| | `get_conversation_messages` | Read message history in a conversation thread. |
-| | `manage_ice_breakers` | Get, set, or delete FAQs for new chatters. |
-| | `manage_persistent_menu` | Configure permanent composer bottom menu. |
-| | `generate_ig_me_link` | Generate `https://ig.me/m/your_username?ref=...` links. |
-| **Analytics** | `get_instagram_account_insights`| Account reach, profile views, and impressions. |
-| | `get_instagram_media_insights` | Reach, saves, and interaction metrics for posts. |
-| **Threads API** | `get_threads_profile` | Bio, username, and stats for your Threads profile. |
-| | `publish_threads_post` | Publish text (up to 500 chars), photos, or video threads. |
-| | `get_threads_posts` | Fetch recent published threads and permalinks. |
-| | `reply_to_threads_post` | Post automated replies to thread conversations. |
-| | `get_threads_insights` | Pull views, likes, replies, and reposts metrics. |
+1. 🔍 **Business Discovery & Intelligence**:
+   - `discover_business_profile`: Search any public creator/brand to inspect followers, bio, media count, website, and top posts.
+   - `search_instagram_hashtag`: Lookup static hashtag IDs from Meta's database.
+   - `get_hashtag_top_media` & `get_hashtag_recent_media`: Fetch top-performing or recent reels/posts for any hashtag.
+   - `get_content_publishing_limit`: Check rolling 24-hour rate limit quota usage (50 posts limit).
+2. 📢 **Publishing & Media Production**:
+   - `publish_instagram_carousel`: Publish multi-image/video carousel albums (2 to 20 items) with optional `is_ai_generated` label.
+   - `publish_instagram_reel`: Upload and publish MP4 video reels.
+   - `publish_instagram_photo`: Post images with captions and hashtags.
+   - `publish_facebook_post` & `publish_facebook_photo`: Post status and photos to Facebook Pages.
+   - `get_instagram_stories`: Read active 24-hour stories.
+   - `get_media_children`: Inspect individual items in carousel albums.
+3. 💬 **Direct Messaging & Rich Media**:
+   - `send_instagram_dm`: Deliver text, links, images, PDFs, and audio voice notes.
+   - `react_to_message`: Send double-tap heart (`❤️`), flame (`🔥`), or thumbs-up reactions.
+   - `send_sender_action`: Show `typing_on` indicator or `mark_seen`.
+   - `send_quick_replies`: Send interactive pill buttons.
+   - `send_button_template` & `send_generic_template`: Send card buttons and horizontal carousels.
+   - `send_human_agent_message`: 7-day extended messaging window with `HUMAN_AGENT` tag.
+   - `upload_reusable_attachment`: Upload media once to obtain reusable attachment ID.
+4. 🛡️ **Comment Moderation & Funnels**:
+   - `moderate_comment`: Hide, unhide, or delete comments on any post or reel.
+   - `reply_to_comment` & `like_comment`: Publicly reply and auto-like comments.
+   - `send_instagram_private_reply`: Privately DM a commenter.
+   - `run_instagram_comment_growth_funnel`: End-to-end ManyChat/Superprofile-style Follow-to-Unlock automation.
+5. 🧵 **Threads API Studio**:
+   - `get_threads_profile`: Fetch profile info, bio, and picture.
+   - `publish_threads_post`: Publish 500-char text, images, or video threads.
+   - `get_threads_posts`: Inspect recent published threads.
+   - `reply_to_threads_post`: Automated reply to thread discussions.
+   - `get_threads_insights`: Real-time views, likes, replies, and repost analytics.
+6. 🛠️ **Troubleshooting & Error Resolver**:
+   - `get_error_code_info`: Official Meta explanation, cause, and exact fix for codes (100, 190, 2207004, 2207042, etc.).
 
 ---
 
-## 🚀 Quickstart: Universal Setup (Windows, macOS & Linux)
+## 🚀 Quick Setup
 
-### Option A: One-Click Interactive Setup Wizard (Easiest)
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/inyogeshwar/meta-social-technologies-mcp.git
-   cd meta-social-technologies-mcp
-   ```
-2. Run the cross-platform setup script:
-   ```bash
-   npm run setup
-   ```
-3. Enter your Page Access Token and Page/Instagram IDs when prompted.
-   *The script automatically detects your OS (Windows, Mac, or Linux), writes your `mcp_config.json`, and installs the Antigravity Skill!*
-
----
-
-### Option B: Manual Setup
-
-1. Copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-2. Fill in your credentials:
-   ```env
-   FB_PAGE_ACCESS_TOKEN=your_permanent_page_token
-   FB_PAGE_ID=your_page_id
-   INSTAGRAM_ID=your_instagram_id
-   ```
-3. Add to your Antigravity config:
-   - **Windows**: `%USERPROFILE%\.gemini\config\mcp_config.json`
-   - **macOS / Linux**: `~/.gemini/config/mcp_config.json`
-   ```json
-   {
-     "mcpServers": {
-       "meta_social_technologies": {
-         "command": "node",
-         "args": ["/absolute/path/to/meta-social-technologies-mcp/server.js"],
-         "env": {
-           "FB_PAGE_ACCESS_TOKEN": "YOUR_TOKEN",
-           "FB_PAGE_ID": "YOUR_PAGE_ID",
-           "INSTAGRAM_ID": "YOUR_INSTAGRAM_ID"
-         }
-       }
-     }
-   }
-   ```
-   *(For full OS-specific paths and Claude Desktop / Cursor instructions, see [docs/UNIVERSAL_SETUP_GUIDE.md](docs/UNIVERSAL_SETUP_GUIDE.md)).*
-
----
-
-### 🧪 Test Your Installation
+### 1. Configuration (`.env` or MCP Config)
 ```bash
-# Verify Page & Instagram connectivity
-npm test
+FB_PAGE_ACCESS_TOKEN=your_facebook_page_access_token
+FB_PAGE_ID=your_facebook_page_id
+INSTAGRAM_ID=your_instagram_professional_account_id
+INSTAGRAM_USERNAME=your_instagram_handle
+THREADS_ACCESS_TOKEN=your_threads_access_token
+THREADS_USER_ID=your_threads_user_id
+```
 
-# Verify text DM & audio voice note delivery
-npm run test:messaging
-
-# Verify double-tap heart & quoted reply
-npm run test:reactions
+### 2. Antigravity / Claude Desktop MCP Configuration
+Add to your `mcp_config.json`:
+```json
+{
+  "mcpServers": {
+    "meta_social_technologies": {
+      "command": "node",
+      "args": ["D:\\meta-social-technologies-mcp\\server.js"],
+      "env": {
+        "FB_PAGE_ACCESS_TOKEN": "YOUR_FB_PAGE_ACCESS_TOKEN",
+        "FB_PAGE_ID": "YOUR_FB_PAGE_ID",
+        "INSTAGRAM_ID": "YOUR_INSTAGRAM_ID",
+        "INSTAGRAM_USERNAME": "your_instagram_handle",
+        "THREADS_ACCESS_TOKEN": "YOUR_THREADS_ACCESS_TOKEN",
+        "THREADS_USER_ID": "YOUR_THREADS_USER_ID"
+      }
+    }
+  }
+}
 ```
 
 ---
 
-## 📄 License
-This project is licensed under the [MIT License](LICENSE) © 2026 Yogeshwar Kumar.
+## 📚 Official Meta Documentation Archive
+
+The `docs/meta-api-reference/` directory contains an offline archive of all 70 official Meta Markdown guides:
+- [Setup & Webhooks Guide](docs/meta-api-reference/instagram-platform/webhooks/setup.md)
+- [Content Publishing & Resumable Uploads](docs/meta-api-reference/instagram-platform/content-publishing.md)
+- [Business Discovery API Reference](docs/meta-api-reference/instagram-platform/instagram-graph-api/reference/ig-user/business_discovery.md)
+- [Hashtag Search & Top Media](docs/meta-api-reference/instagram-platform/instagram-graph-api/reference/ig-hashtag/top-media.md)
+- [Comment Moderation Guide](docs/meta-api-reference/instagram-platform/comment-moderation.md)
+- [Meta Graph API Error Codes Guide](docs/meta-api-reference/instagram-platform/instagram-graph-api/reference/error-codes.md)
+
+---
+
+## 🔒 Security & Privacy Notice
+This repository contains **zero hardcoded credentials**, tokens, or private IDs. All secrets are loaded dynamically via environment variables or encrypted databases.
+
+Licensed under the MIT License. Built by Yogeshwar Kumar.
