@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Author](https://img.shields.io/badge/Created_by-Yogeshwar_Kumar-orange.svg)](https://github.com/inyogeshwar)
 
-> An enterprise-grade **Model Context Protocol (MCP)** server and AI automation engine for **Facebook Pages** and **Instagram Business/Creator accounts** (`your account`).
+> An enterprise-grade **Model Context Protocol (MCP)** server and AI automation engine for **Facebook Pages**, **Instagram Business/Creator accounts**, and **Threads**.
 > Build ManyChat & Superprofile-style comment funnels, send audio voice notes, trigger double-tap heart reactions, execute threaded quoted replies, and publish content seamlessly using AI agents.
 
 ---
@@ -45,13 +45,12 @@
 │         meta-social-technologies-mcp Server            │
 │                     (server.js)                        │
 └───────────────────────────┬────────────────────────────┘
-                            │ (HTTPS REST v26.0)
+                            │ (HTTPS REST v26.0 & Threads v1.0)
 ┌───────────────────────────▼────────────────────────────┐
 │                    Meta Graph API                      │
-│      ┌────────────────────┴────────────────────┐       │
-│      ▼                                         ▼       │
-│  Facebook Page                           Instagram     │
-│  \(Your Page\)                         │
+│      ┌────────────────────┼────────────────────┐       │
+│      ▼                    ▼                    ▼       │
+│  Facebook Page        Instagram             Threads    │
 └────────────────────────────────────────────────────────┘
 ```
 
@@ -62,7 +61,7 @@
 | Category | Tool Name | Description |
 | :--- | :--- | :--- |
 | **Profile** | `get_page_profile` | Profile details and fan count for Facebook Page. |
-| | `get_instagram_profile` | Bio, follower count, and media stats for `your account`. |
+| | `get_instagram_profile` | Bio, follower count, and media stats for your account. |
 | | `get_user_profile` | Look up username, profile photo, and follower status of any chatter. |
 | **Publishing** | `publish_facebook_post` | Publish text status and links to Facebook Page. |
 | | `publish_facebook_photo` | Post photo with caption to Facebook Page. |
@@ -72,11 +71,11 @@
 | | `get_instagram_media` | Fetch recent Instagram media posts and reels. |
 | **Comments** | `get_media_comments` | Read comments on a specific post or reel. |
 | | `reply_to_comment` | Post a public reply to any comment. |
-| | `like_comment` | Like a comment on behalf of `your account`. |
+| | `like_comment` | Like a comment on behalf of your account. |
 | **Direct DMs** | `send_instagram_dm` | Send text, PDF, image, or M4A/WAV audio. Supports `reply_to_message_id`. |
 | | `send_instagram_private_reply`| Send a private DM in response to a user's comment. |
 | | `react_to_message` | Double-tap heart (`❤️`) or emoji reaction to a specific message ID. |
-| **Funnel** | `check_user_follows_account` | Check if a chatter follows `your account`. |
+| **Funnel** | `check_user_follows_account` | Check if a chatter follows your account. |
 | | `run_instagram_comment_growth_funnel` | Complete ManyChat-style keyword auto-reply & follow-gated DM delivery. |
 | **Interactive** | `send_sender_action` | Trigger `typing_on`, `typing_off`, or `mark_seen`. |
 | | `send_quick_replies` | Interactive pill buttons (up to 13 buttons). |
@@ -99,49 +98,58 @@
 
 ---
 
-## 🚀 Quickstart & Setup
+## 🚀 Quickstart: Universal Setup (Windows, macOS & Linux)
 
-### 1. Installation
-Clone the repository or navigate to its directory:
-```bash
-git clone https://github.com/inyogeshwar/meta-social-technologies-mcp.git
-cd meta-social-technologies-mcp
-```
+### Option A: One-Click Interactive Setup Wizard (Easiest)
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/inyogeshwar/meta-social-technologies-mcp.git
+   cd meta-social-technologies-mcp
+   ```
+2. Run the cross-platform setup script:
+   ```bash
+   npm run setup
+   ```
+3. Enter your Page Access Token and Page/Instagram IDs when prompted.
+   *The script automatically detects your OS (Windows, Mac, or Linux), writes your `mcp_config.json`, and installs the Antigravity Skill!*
 
-### 2. Configure Environment Variables
-Copy `.env.example` to `.env`:
-```bash
-cp .env.example .env
-```
-Fill in your credentials:
-```env
-FB_PAGE_ACCESS_TOKEN=your_permanent_page_token
-FB_PAGE_ID=your_page_id
-INSTAGRAM_ID=your_instagram_id
-```
-*(See [docs/PERMANENT_TOKEN_GUIDE.md](docs/PERMANENT_TOKEN_GUIDE.md) for how to generate a lifetime permanent token).*
+---
 
-### 3. Add to Antigravity MCP Config
-Add to `%USERPROFILE%\.gemini\config\mcp_config.json`:
-```json
-{
-  "mcpServers": {
-    "meta_social_technologies": {
-      "command": "node",
-      "args": [
-        "D:\\meta-social-technologies-mcp\\server.js"
-      ],
-      "env": {
-        "FB_PAGE_ACCESS_TOKEN": "YOUR_TOKEN",
-        "FB_PAGE_ID": "YOUR_PAGE_ID",
-        "INSTAGRAM_ID": "YOUR_INSTAGRAM_ID"
-      }
-    }
-  }
-}
-```
+### Option B: Manual Setup
 
-### 4. Run the Test Suites
+1. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+2. Fill in your credentials:
+   ```env
+   FB_PAGE_ACCESS_TOKEN=your_permanent_page_token
+   FB_PAGE_ID=your_page_id
+   INSTAGRAM_ID=your_instagram_id
+   ```
+3. Add to your Antigravity config:
+   - **Windows**: `%USERPROFILE%\.gemini\config\mcp_config.json`
+   - **macOS / Linux**: `~/.gemini/config/mcp_config.json`
+   ```json
+   {
+     "mcpServers": {
+       "meta_social_technologies": {
+         "command": "node",
+         "args": ["/absolute/path/to/meta-social-technologies-mcp/server.js"],
+         "env": {
+           "FB_PAGE_ACCESS_TOKEN": "YOUR_TOKEN",
+           "FB_PAGE_ID": "YOUR_PAGE_ID",
+           "INSTAGRAM_ID": "YOUR_INSTAGRAM_ID"
+         }
+       }
+     }
+   }
+   ```
+   *(For full OS-specific paths and Claude Desktop / Cursor instructions, see [docs/UNIVERSAL_SETUP_GUIDE.md](docs/UNIVERSAL_SETUP_GUIDE.md)).*
+
+---
+
+### 🧪 Test Your Installation
 ```bash
 # Verify Page & Instagram connectivity
 npm test
